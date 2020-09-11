@@ -1,0 +1,46 @@
+#1. Open Google Cloud SDK terminal 
+
+#2. Create the VM Instance with Name:
+
+gcloud compute instances create vm-rob  --project=qwiklabs-gcp-00-3abc32cf4588 --region=us-central1 --zone=us-central1-c --machine-type=n1-standard-1  --subnet=default --no-address
+
+#6. Checking CPU platform:
+
+gcloud compute zones describe us-central1-c  --project=qwiklabs-gcp-00-3abc32cf4588
+
+
+#TASK2 : Create a Windows Virtual Machine
+
+#1. Create the VM instances with Windows, with Region europe-west2, zone europe-west2-a, machine type: n1-standard-2, boot disk: windows server, bootdisk: SSD persistent and size:100
+
+gcloud compute instances create vm-windows  --region=europe-west2 --zone=europe-west2-a --machine-type=n1-standard-2 --boot-disk=windows --boot-disk-type=pd-ssd 
+
+#2. Create Firewall rules for the vm-windows and allow http and https traffic
+
+gcloud compute --project=qwiklabs-gcp-00-3abc32cf4588 firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+gcloud compute --project=qwiklabs-gcp-00-3abc32cf4588 firewall-rules create default-allow-https --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:443 --source-ranges=0.0.0.0/0 --target-tags=https-server
+
+#TASK3 Create a custom virtual machine
+
+gcloud compute instances create vm-custom --project=qwiklabs-gcp-00-3abc32cf4588  --zone=us-west1-b --machine-type=e2-custom-6-32768 --subnet=default --image=debian-10-buster-v20200910 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=vm-custom 
+
+#Sub-TASK3: Connect to VM Custom via SSH
+
+gcloud compute ssh vm-custom
+
+To see information about unused and used memory and swap space on your custom VM, run the following command:
+
+free
+To see details about the RAM installed on your VM, run the following command:
+
+sudo dmidecode -t 17
+To verify the number of processors, run the following command:
+
+nproc
+To see details about the CPUs installed on your VM, run the following command:
+
+lscpu
+To exit the SSH terminal, run the following command:
+
+exit
